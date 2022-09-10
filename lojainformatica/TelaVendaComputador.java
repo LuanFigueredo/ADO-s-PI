@@ -4,6 +4,10 @@
  */
 package br.sp.senac.d160.lojainformatica;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author luan.fsilva17
@@ -98,6 +102,11 @@ public class TelaVendaComputador extends javax.swing.JFrame {
         jScrollPane3.setViewportView(tblCompras);
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         btnConfirmar.setText("Confirmar");
 
@@ -176,9 +185,11 @@ public class TelaVendaComputador extends javax.swing.JFrame {
 
         bgSO.add(tgWindows);
         tgWindows.setText("Windows");
+        tgWindows.setActionCommand("Windows");
 
         bgSO.add(tgLinux);
         tgLinux.setText("Linux");
+        tgLinux.setActionCommand("Linux");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -278,6 +289,11 @@ public class TelaVendaComputador extends javax.swing.JFrame {
         );
 
         btnAdicionar.setText("ADICIONAR");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -323,6 +339,63 @@ public class TelaVendaComputador extends javax.swing.JFrame {
     private void rboNotebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rboNotebookActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rboNotebookActionPerformed
+
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        // TODO add your handling code here:
+        String tipoComputador = "";
+        if(rboPC.isSelected()){
+            tipoComputador = rboPC.getText();    
+        }else if(rboNotebook.isSelected()){
+            tipoComputador = rboNotebook.getText();
+        }else if(rboServidor.isSelected()){
+            tipoComputador = rboServidor.getText();
+        }else{
+            JOptionPane.showMessageDialog(this, "Selecione um tipo de PC!");
+        }
+        
+        String sistemaOperacional= "";
+        sistemaOperacional = bgSO.getSelection().getActionCommand();
+        
+        String tipoHD = "";
+        tipoHD = cboHD.getSelectedItem().toString();
+        
+        String acessorios = "";
+        if(chkMochila.isSelected()){
+            acessorios += chkMochila.getText() + ", ";
+        }
+        if(chkHUB.isSelected()){
+            acessorios += chkHUB.getText() + ", ";
+        }
+        if(chkMouse.isSelected()){
+            acessorios += chkMouse.getText() + ", ";
+        }
+        
+        String itensLista = ""; 
+            List<String> listaItens = lstServicos.getSelectedValuesList();
+            for(String item : listaItens){
+                itensLista += item + ", ";
+          
+            }
+            DefaultTableModel modelo = (DefaultTableModel) tblCompras.getModel();
+            modelo.addRow(new String[]{tipoComputador,
+                                        sistemaOperacional,
+                                        tipoHD,
+                                        acessorios,
+                                        itensLista
+                
+            });
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        // TODO add your handling code here:
+        int indiceLinha = tblCompras.getSelectedRow();
+        if(indiceLinha >=0){
+            DefaultTableModel modelo = (DefaultTableModel) tblCompras.getModel();
+            modelo.removeRow(indiceLinha);
+        }else{
+            JOptionPane.showMessageDialog(this,"Selecione uma linha!");
+        }
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments
